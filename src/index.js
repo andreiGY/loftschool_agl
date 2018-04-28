@@ -1,3 +1,5 @@
+//import { context } from "mocha";
+
 /* ДЗ 1 - Функции */
 
 /*
@@ -95,13 +97,11 @@ function returnArgumentsArray() {
 
    console.log(newSum()) выведет 6
  */
-function bindFunction(fn) {
-  var a = [].slice.call(arguments);
-  return function(a) {
-    //fn.apply(context, a);
-    
-  }
-
+function bindFunction(func, ...theArgs) 
+{
+return function(){
+  return func.apply(null, theArgs);
+}
 }
 
 export {
