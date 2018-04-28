@@ -1,7 +1,9 @@
 {
   "presets": [
-    "latest"
+    "es2015"
   ],
+  "sourceMaps": true,
+  "retainLines": true,
   "plugins": [
     "transform-runtime"
   ]
