@@ -61,6 +61,12 @@ if(initial === undefined) {
    upperProps({ name: 'Сергей', lastName: 'Петров' }) вернет ['NAME', 'LASTNAME']
  */
 function upperProps(obj) {
+  var arr = [];
+  arr = Object.keys(obj);
+  for(var k in arr) {
+    arr[k] = arr[k].toUpperCase();
+  }
+  return arr;
 }
 
 /*
@@ -70,6 +76,31 @@ function upperProps(obj) {
  Посмотрите как работает slice и повторите это поведение для массива, который будет передан в параметре array
  */
 function slice(array, from, to) {
+  var newArray = [];
+    if(from !== undefined && to !== undefined) {  //если переданы параметры: от и до
+        let absFrom = from < 0? array.length - Math.abs(from): from;
+        let absTo = to < 0? array.length - Math.abs(to): to;
+        for(var i = 0; i< array.length; i++){
+            if(i >= absFrom && i < Math.min(absTo, array.length)) {
+                newArray.push(array[i]);
+            }
+        }
+        return newArray;
+
+    }
+    else if(from !== undefined  && to === undefined){  // если передан только: от
+        let absFrom = from < 0? array.length - Math.abs(from): from;
+        for(var i= 0; i< array.length; i++) {
+            if(i >= absFrom) {
+                newArray.push(array[i]);
+            }
+        }
+        return newArray;
+    }
+    else { // без параметров
+        newArray = array;
+        return newArray;
+    }
 }
 
 /*
@@ -79,6 +110,7 @@ function slice(array, from, to) {
  Proxy должен перехватывать все попытки записи значений свойств и возводить это значение в квадрат
  */
 function createProxy(obj) {
+  
 }
 
 export {
