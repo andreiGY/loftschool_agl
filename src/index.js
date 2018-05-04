@@ -17,13 +17,21 @@
    isAllTrue([100, 2, 3, 4, 5], n => n < 10) // вернет false
  */
 function isAllTrue(array, fn) {
-var result = true;
-while(result) {
-  for(var i=0; i< array.length; i++) {
-    result = fn(array[i]);
+  if(!Array.isArray(array) || !array.length > 0) {
+      throw "empty array";
+      return;
   }
-}
-return result;
+  if(!typeof fn === "function") {
+    throw "fn is not a function";
+    return;
+  }
+
+  var result = true;
+  for(var i=0; i< array.length; i++) {
+     if(!fn(array[i])) return false;
+  }
+  return result;
+
 }
 
 /*
@@ -43,7 +51,19 @@ return result;
    isSomeTrue([1, 2, 3, 4, 5], n => n > 20) // вернет false
  */
 function isSomeTrue(array, fn) {
-  return undefined;
+  if(!Array.isArray(array) || !array.length > 0) {
+    throw "empty array";
+    return;
+}
+if(!typeof fn === "function") {
+  throw "fn is not a function";
+  return;
+}
+
+  for(var i=0; i < array.length; i++) {
+    if(fn(array[i])) return true;
+  }
+  return false;
 }
 
 /*
@@ -57,7 +77,21 @@ function isSomeTrue(array, fn) {
  3.3: Необходимо выбрасывать исключение в случаях:
    - fn не является функцией (с текстом "fn is not a function")
  */
-function returnBadArguments(fn) {
+function returnBadArguments(fn, ...restArgs) {
+  if(! (fn instanceof Function)) {
+    throw new Error("fn is not a function");
+    return;
+  }
+
+  var exArgs = [];
+  for(var i=0; i <restArgs.length; i++) {
+    try {
+      fn(restArgs[i]);
+    } catch (e) {
+      exArgs.push(restArgs[i]);
+    }
+  }
+  return exArgs;
 }
 
 /*
@@ -77,7 +111,38 @@ function returnBadArguments(fn) {
    - number не является числом (с текстом "number is not a number")
    - какой-либо из аргументов div является нулем (с текстом "division by 0")
  */
-function calculator() {
+function calculator(number = 0) {
+
+  if(!( typeof number === "number")) {
+    throw "number is not a number";
+    return;
+  }
+
+  var mathObject = {
+    num: number,
+    sum: function() {
+      var allArgs = Array.from(arguments);
+      return allArgs.reduce(((a,b) => a+b), this.num);
+    },
+    dif: function() {
+      var allArgs = Array.from(arguments);
+      return this.num - (allArgs.reduce((a,b) => a+b));
+    },
+    div: function() {
+      var allArgs = Array.from(arguments);
+      if(allArgs.some((x) => x === 0)) { 
+        throw "division by 0"; 
+        return;
+    }
+      return allArgs.reduce(((a,b) => a / b), this.num);
+    },
+    mul: function() {
+      var allArgs = Array.from(arguments);
+      return allArgs.reduce(((a,b) => a * b), this.num);
+    }
+  };
+
+  return mathObject;
 }
 
 /* При решении задач, пострайтесь использовать отладчик */
