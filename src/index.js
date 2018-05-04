@@ -17,6 +17,13 @@
    isAllTrue([100, 2, 3, 4, 5], n => n < 10) // вернет false
  */
 function isAllTrue(array, fn) {
+var result = true;
+while(result) {
+  for(var i=0; i< array.length; i++) {
+    result = fn(array[i]);
+  }
+}
+return result;
 }
 
 /*
