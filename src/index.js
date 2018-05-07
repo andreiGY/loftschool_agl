@@ -77,9 +77,30 @@ function upperProps(obj) {
  */
 function slice(array, from, to) {
   var newArray = [];
+  var absFrom, absTo;
+
+  if(from !== undefined) {
+    absFrom = from < 0? array.length - Math.abs(from): from;
+  } else {
+    absFrom = 0;
+  } 
+
+  if(to !== undefined) {
+    absTo = to < 0? array.length - Math.abs(to): to;
+  } else {
+    absTo = array.length;
+  }
+
+  for(var i=0; i<array.length; i++) {
+    if(i >= absFrom && i < absTo) {
+      newArray.push(array[i]);
+    }
+  }
+
+  return newArray;
+
+  /*
     if(from !== undefined && to !== undefined) {  //если переданы параметры: от и до
-        let absFrom = from < 0? array.length - Math.abs(from): from;
-        let absTo = to < 0? array.length - Math.abs(to): to;
         for(var i = 0; i< array.length; i++){
             if(i >= absFrom && i < Math.min(absTo, array.length)) {
                 newArray.push(array[i]);
@@ -89,7 +110,6 @@ function slice(array, from, to) {
 
     }
     else if(from !== undefined  && to === undefined){  // если передан только: от
-        let absFrom = from < 0? array.length - Math.abs(from): from;
         for(var i= 0; i< array.length; i++) {
             if(i >= absFrom) {
                 newArray.push(array[i]);
@@ -101,6 +121,7 @@ function slice(array, from, to) {
         newArray = array;
         return newArray;
     }
+    */
 }
 
 /*
