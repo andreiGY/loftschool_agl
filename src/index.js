@@ -96,32 +96,7 @@ function slice(array, from, to) {
       newArray.push(array[i]);
     }
   }
-
   return newArray;
-
-  /*
-    if(from !== undefined && to !== undefined) {  //если переданы параметры: от и до
-        for(var i = 0; i< array.length; i++){
-            if(i >= absFrom && i < Math.min(absTo, array.length)) {
-                newArray.push(array[i]);
-            }
-        }
-        return newArray;
-
-    }
-    else if(from !== undefined  && to === undefined){  // если передан только: от
-        for(var i= 0; i< array.length; i++) {
-            if(i >= absFrom) {
-                newArray.push(array[i]);
-            }
-        }
-        return newArray;
-    }
-    else { // без параметров
-        newArray = array;
-        return newArray;
-    }
-    */
 }
 
 /*
