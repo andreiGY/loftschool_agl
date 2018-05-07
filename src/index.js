@@ -18,12 +18,10 @@
  */
 function isAllTrue(array, fn) {
   if(!Array.isArray(array) || !array.length > 0) {
-      throw "empty array";
-      return;
+      throw new Error("empty array");
   }
   if(!typeof fn === "function") {
-    throw "fn is not a function";
-    return;
+    throw new Error("fn is not a function");
   }
 
   var result = true;
@@ -52,12 +50,10 @@ function isAllTrue(array, fn) {
  */
 function isSomeTrue(array, fn) {
   if(!Array.isArray(array) || !array.length > 0) {
-    throw "empty array";
-    return;
+    throw new Error("empty array");
 }
 if(!typeof fn === "function") {
-  throw "fn is not a function";
-  return;
+  throw new Error("fn is not a function");
 }
 
   for(var i=0; i < array.length; i++) {
@@ -80,7 +76,6 @@ if(!typeof fn === "function") {
 function returnBadArguments(fn, ...restArgs) {
   if(! (fn instanceof Function)) {
     throw new Error("fn is not a function");
-    return;
   }
 
   var exArgs = [];
@@ -114,35 +109,31 @@ function returnBadArguments(fn, ...restArgs) {
 function calculator(number = 0) {
 
   if(!( typeof number === "number")) {
-    throw "number is not a number";
-    return;
+    throw new Error("number is not a number");
   }
 
-  var mathObject = {
-    num: number,
-    sum: function() {
+  return {
+    sum() {
       var allArgs = Array.from(arguments);
-      return allArgs.reduce(((a,b) => a+b), this.num);
+      return allArgs.reduce(((a,b) => a+b), number);
     },
-    dif: function() {
+    dif() {
       var allArgs = Array.from(arguments);
-      return this.num - (allArgs.reduce((a,b) => a+b));
+      return number - (allArgs.reduce((a,b) => a+b));
     },
-    div: function() {
+    div() {
       var allArgs = Array.from(arguments);
       if(allArgs.some((x) => x === 0)) { 
-        throw "division by 0"; 
-        return;
+        throw new Error("division by 0"); 
     }
-      return allArgs.reduce(((a,b) => a / b), this.num);
+      return allArgs.reduce(((a,b) => a / b), number);
     },
     mul: function() {
       var allArgs = Array.from(arguments);
-      return allArgs.reduce(((a,b) => a * b), this.num);
+      return allArgs.reduce(((a,b) => a * b), number);
     }
   };
 
-  return mathObject;
 }
 
 /* При решении задач, пострайтесь использовать отладчик */
