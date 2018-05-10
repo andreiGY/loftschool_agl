@@ -77,7 +77,7 @@ function findAllPSiblings(where) {
 function findError(where) {
     var result = [];
 
-    for (var child of where.childNodes) {
+    for (var child of where.children) {
         result.push(child.innerText);
     }
 
@@ -97,6 +97,10 @@ function findError(where) {
    должно быть преобразовано в <div></div><p></p>
  */
 function deleteTextNodes(where) {
+ let eArr = Array.from(where.childNodes);
+  for(let i=0; i < eArr.length; i++) {
+    if(eArr[i].nodeType === Node.TEXT_NODE) where.removeChild(eArr[i]) ;
+  }
 }
 
 /*
@@ -112,6 +116,14 @@ function deleteTextNodes(where) {
    должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
 function deleteTextNodesRecursive(where) {
+  let eArr = Array.from(where.childNodes);
+  for(let i=0; i < eArr.length; i++) {
+    if(eArr[i].nodeType === Node.TEXT_NODE) {
+      where.removeChild(eArr[i]) ;
+    } else {
+      deleteTextNodesRecursive(eArr[i]);
+    }
+  }
 }
 
 /*
