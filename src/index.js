@@ -147,6 +147,53 @@ function deleteTextNodesRecursive(where) {
    }
  */
 function collectDOMStat(root) {
+
+  function calculateNodes(rootElement, counter = 0) {
+    for (let i = 0; i < rootElement.childNodes.length; i++) {
+        if (rootElement.childNodes[i].nodeType === 3) counter += 1;
+        if (rootElement.childNodes[i].hasChildNodes) calculateNodes(rootElement.childNodes[i], counter);
+    }
+    return counter;
+}
+
+function getAllElements(rootElement, elems = new Object()) {               
+    for(let i = 0; i<rootElement.children.length; i++) {
+        if(!elems.hasOwnProperty(rootElement.children[i].nodeName)) {
+            elems[rootElement.children[i].nodeName] = 1;
+        }
+        else {
+            elems[rootElement.children[i].nodeName] +=1;
+        }
+        if (rootElement.children[i].hasChildNodes) getAllElements(rootElement.children[i], elems);
+    }
+    //alert("getAllElements:  " + JSON.stringify(elems));
+    return elems;
+}
+
+function classStat(rootElement, cls = new Object()) {
+  
+  for(let i=0; i<rootElement.children.length; i++) {
+    for(let y =0; y<rootElement.children[i].classList.length; y++) {
+    if(!cls.hasOwnProperty(rootElement.children[i].classList[y])) {
+        cls[rootElement.children[i].classList[y]] = 1;
+    } else {
+        cls[rootElement.children[i].classList[y]] +=1;
+    }
+    
+}
+  if(rootElement.children[i].hasChildNodes) classStat(rootElement.children[i], cls);
+}
+
+   // alert("classStat: " + JSON.stringify(cls));
+    return cls;
+}
+
+return {
+    tags: getAllElements(root),
+    classes: classStat(root),
+    texts: calculateNodes(root)
+    
+}
 }
 
 /*
