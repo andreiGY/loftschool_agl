@@ -141,6 +141,8 @@ describe('ДЗ 4 - Работа с DOM', () => {
                 assert.equal(info.nodes.length, targetInfo.nodes.length, 'некорректный размер info.nodes');
                 assert.deepEqual(targetInfo.nodes, info.nodes);
                 done();
+                console.log(info);
+                console.log(targetInfo);
             };
             let elementToInsert = document.createElement('div');
             let targetInfo = {
@@ -160,6 +162,8 @@ describe('ДЗ 4 - Работа с DOM', () => {
             let where = document.createElement('div');
             let fn = info => {
                 assert.isObject(info, 'info должен быть объектом');
+                console.log(info);
+                console.log(targetInfo);
                 assert.equal(info.type, targetInfo.type, `info.type должен быть равен ${targetInfo.type}`);
                 assert.isTrue(Array.isArray(info.nodes), 'info.nodes должен быть массивом');
                 assert.equal(info.nodes.length, targetInfo.nodes.length, 'некорректный размер info.nodes');
@@ -196,6 +200,8 @@ describe('ДЗ 4 - Работа с DOM', () => {
                 assert.equal(info.nodes.length, targetInfo.nodes.length, 'некорректный размер info.nodes');
                 assert.deepEqual(targetInfo.nodes, info.nodes);
                 done();
+                console.log(info);
+                console.log(targetInfo);
             };
             let elementToRemove = document.createElement('div');
             let targetInfo = {
@@ -221,6 +227,8 @@ describe('ДЗ 4 - Работа с DOM', () => {
                 assert.equal(info.nodes.length, targetInfo.nodes.length, 'некорректный размер info.nodes');
                 assert.deepEqual(targetInfo.nodes, info.nodes);
                 done();
+                console.log(info);
+                console.log(targetInfo);
             };
             let elementToRemove1 = document.createElement('div');
             let elementToRemove2 = document.createElement('div');

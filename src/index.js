@@ -229,6 +229,56 @@ return {
    }
  */
 function observeChildNodes(where, fn) {
+  // Select the node that will be observed for mutations
+//var where = document.getElementById('some-id');
+
+// Options for the observer (which mutations to observe)
+//var conf = { childList: true };
+
+// Callback function to execute when mutations are observed
+/*
+var callback = function(mutationsList) {
+    for(var mutation of mutationsList) {
+        if (mutation.type == 'childList') {
+            console.log('A child node has been added or removed.');
+        }
+        else if (mutation.type == 'attributes') {
+            console.log('The ' + mutation.attributeName + ' attribute was modified.');
+        }
+    }
+};
+*/
+var cb = function(mList) {
+  var obj = new Object();
+ // obj.type = mList.addedNodes !== undefined? "insert": "remove";
+//  obj.nodes = mList.addedNodes !== undefined? Array.from(mList.addedNodes): Array.from(mList.removedNodes)
+  
+
+  var mr = Array.from(mList);
+  for(var m of mr){
+    if(m.type == "childlist") {
+      if(m.addedNodes.length > 0) {
+        obj.type="insert";
+        obj.nodes = Array.from(m.addedNodes);
+      }
+      else if(m.removedNodes.length > 0) {
+        obj.type="remove";
+        obj.nodes = Array.from(m.removedNodes);
+
+      } 
+    }
+
+
+  }
+  return fn(obj);
+
+}
+
+// Create an observer instance linked to the callback function
+var observer = new MutationObserver(cb);
+
+// Start observing the target node for configured mutations
+observer.observe(where, { childList: true, subtree: true });
 }
 
 export {
