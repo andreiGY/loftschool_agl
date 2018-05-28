@@ -43,10 +43,76 @@ const addButton = homeworkContainer.querySelector('#add-button');
 // таблица со списком cookie
 const listTable = homeworkContainer.querySelector('#list-table tbody');
 
-filterNameInput.addEventListener('keyup', function() {
+filterNameInput.addEventListener('keyup', function(event) {
     // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
+    let searchStr = event.target.value;
+    resfreshTable(searchStr);
 });
 
 addButton.addEventListener('click', () => {
     // здесь можно обработать нажатие на кнопку "добавить cookie"
+    alert(addNameInput.value, addValueInput.value);
+    addCookie(addNameInput.value, addValueInput.value, 1000);
+    
 });
+
+
+// возвращает cookie с именем name, если есть, если нет, то undefined
+function getCookie(name) {
+  var matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+//возвращает все cookies документа
+function readCookies() {
+  let sp = document.cookie.split(";");
+  let ret = [];
+  for(let i=0; i< sp.length; i++) {
+    ret.push(sp[i].split("="));
+  }
+  return ret;
+}
+
+function addCookie(name, value, exp) {
+  let date = new Date(new Date().getTime() + exp * 1000);
+  let cText = name + "=" + value +"; path=/; expires=" + date.toUTCString();
+  document.cookie = cText;
+
+  resfreshTable();
+}
+
+function deleteCookie(name) {
+  let expdate = new Date(new Date().getTime() - 1000);
+  document.cookie = name +"=; Path=/; expires=" + expdate.toUTCString();
+}
+
+function resfreshTable(cName) {
+
+  listTable.innerHTML = ""; // удаляем все строки
+  let c = readCookies();
+
+  cName === undefined? cName = filterNameInput.value: cName ;
+  for(let i=0; i< c.length; i++) {
+    if(cName != "" && !(c[i][0].search(cName) !=-1 || c[i][1].search(cName) !=-1) ) continue ;
+
+    let delButton = document.createElement("button");
+    delButton.id = "rb" + i;
+    delButton.innerText = "Удалить";
+    delButton.addEventListener("click", (event) => {
+      let cookieName = event.target.parentNode.parentNode.cells[0].innerText;
+         deleteCookie(cookieName);
+         listTable.removeChild(event.target.parentNode.parentNode);
+    });
+    let row = listTable.insertRow(i); row.id ="tr" + i;
+    let nCell = row.insertCell(0); nCell.innerText= c[i][0];
+    let vCell = row.insertCell(1); vCell.innerText= c[i][1];
+    let bCell = row.insertCell(2); bCell.appendChild(delButton);
+  }
+  
+
+  //
+}
+
+
