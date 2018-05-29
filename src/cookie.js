@@ -45,25 +45,17 @@ const listTable = homeworkContainer.querySelector('#list-table tbody');
 
 filterNameInput.addEventListener('keyup', function(event) {
     // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
-    let searchStr = event.target.value;
-    resfreshTable(searchStr);
+   // let searchStr = event.target.value;
+    resfreshTable();
 });
 
 addButton.addEventListener('click', () => {
     // здесь можно обработать нажатие на кнопку "добавить cookie"
-    alert(addNameInput.value, addValueInput.value);
+    //alert(addNameInput.value, addValueInput.value);
     addCookie(addNameInput.value, addValueInput.value, 1000);
     
 });
 
-
-// возвращает cookie с именем name, если есть, если нет, то undefined
-function getCookie(name) {
-  var matches = document.cookie.match(new RegExp(
-    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-  ));
-  return matches ? decodeURIComponent(matches[1]) : undefined;
-}
 
 //возвращает все cookies документа
 function readCookies() {
@@ -75,6 +67,7 @@ function readCookies() {
   return ret;
 }
 
+//добавляем cookie
 function addCookie(name, value, exp) {
   let date = new Date(new Date().getTime() + exp * 1000);
   let cText = name + "=" + value +"; path=/; expires=" + date.toUTCString();
@@ -83,19 +76,30 @@ function addCookie(name, value, exp) {
   resfreshTable();
 }
 
+// удаляем cookie по имени
 function deleteCookie(name) {
   let expdate = new Date(new Date().getTime() - 1000);
   document.cookie = name +"=; Path=/; expires=" + expdate.toUTCString();
 }
 
-function resfreshTable(cName) {
 
-  listTable.innerHTML = ""; // удаляем все строки
+// отрисовка строк таблицы
+function resfreshTable() {
+
+  listTable.innerHTML = ""; // удаляем все строки таблицы
   let c = readCookies();
+  let cName ="";
+  console.log(filterNameInput.value);
+  if(filterNameInput.value.length != 0) cName=filterNameInput.value;
 
-  cName === undefined? cName = filterNameInput.value: cName ;
+ 
   for(let i=0; i< c.length; i++) {
-    if(cName != "" && !(c[i][0].search(cName) !=-1 || c[i][1].search(cName) !=-1) ) continue ;
+  
+   if(cName != "") {
+     if(!(c[i][0].search(cName) != -1 || c[i][1].search(cName) != -1)) {
+        continue;
+     }
+   }
 
     let delButton = document.createElement("button");
     delButton.id = "rb" + i;
@@ -105,14 +109,12 @@ function resfreshTable(cName) {
          deleteCookie(cookieName);
          listTable.removeChild(event.target.parentNode.parentNode);
     });
-    let row = listTable.insertRow(i); row.id ="tr" + i;
+    let row = listTable.insertRow(); row.id ="tr" + i;
     let nCell = row.insertCell(0); nCell.innerText= c[i][0];
     let vCell = row.insertCell(1); vCell.innerText= c[i][1];
     let bCell = row.insertCell(2); bCell.appendChild(delButton);
   }
   
-
-  //
 }
 
 
